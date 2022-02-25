@@ -1,0 +1,21 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: ray-dashboard-vs
+  namespace: santosh-shetkar-katonic-ai
+spec:
+  gateways:
+  - kubeflow/kubeflow-gateway 
+  hosts:
+    - "test.katonic.ai"
+  http:
+  - match:
+    - uri:
+        prefix: /{{ .Values.podTypes.rayHeadType.user_name }}/ray/
+    rewrite:
+      uri: /
+    route:
+    - destination:
+        host: ray-example1-ray-head 
+        port:
+          number: 8265
